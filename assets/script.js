@@ -1,14 +1,19 @@
-var value = 1, colorValue = '#ffffff';
+var value = 1, colorValue = '#000000';
 
 $(document).ready(function(){
 $('#grid_container').html("");
 
-repeat_access();
+$('#load_grid').on('click', function(){
+
+	repeat_access();
+
+	});
+
 
 $('#clear_field').on('click', function(){
 
 	$('.grid_square').remove();
-	repeat_access();
+	$('.grid_border').remove();
 	
 	});
 
@@ -23,15 +28,27 @@ $('#select_trail').on('click', function(){
 	Trail_Value(value);
 
 	});
-$('#random_trail').on('click', function(){
+$('#opacity_change').on('click', function(){
 
 	value = 3;
 	Trail_Value(value);
 	});
 	
+$('#random_trail').on('click', function(){
+
+	value = 4;
+	Trail_Value(value);
+	});
+	
 $('.grid_square').hover( function(){
+		if(value== 3){
+			GridOpacityChange();
+		}
+		else{
 		$(this).css('background-color', colorValue);
+		}
 		});
+		
 });
 	
 	//Gathers value for grid
@@ -48,9 +65,11 @@ $('.grid_square').hover( function(){
 			box_size = $('#grid_container').width()/input - 2;
 			for (i= 0; i <=input; i++){
 				for(j = 0; j <= input; j++){
-					$('#grid_container').append('<div class="grid_square"></div>');
+					$('#grid_container').append('<div class="grid_border"><div class="grid_square"></div></div>');
 					}
 				}
+			$('.grid_border').css('height', box_size);
+			$('.grid_border').css('width', box_size);
 			$('.grid_square').css('height', box_size);
 			$('.grid_square').css('width', box_size);
 
@@ -59,22 +78,22 @@ $('.grid_square').hover( function(){
 		{
 			alert("Invalid input");
 		}
-	$('.grid_square').hover( function(){
-		$(this).css('background-color', colorValue);
-		});
-
+		Hover_Grid();
+	
 	}
 	//Determines Trail Type
 	function Trail_Value(value){
 		switch(value){
 		case 1:
-		colorValue = '#ffffff';
+		colorValue = '#000000';
+		Hover_Grid();
 		break;
 		case 2:
 		colorValue = Select_Hex();
 		break;
 		case 3:
-		colorValue =  '#'+(Math.random()*0xFFFFFF<<0).toString(16);
+		GridOpacityChange();
+		break;
 		default:
 		break;
 		}
@@ -94,4 +113,34 @@ $('.grid_square').hover( function(){
 			alert("Try again!");
 		}
 		while(hexValue == false);
+	}
+
+	function Hover_Grid(){
+		$('.grid_square').unbind();
+		$('.grid_square').hover( function(){
+		$(this).css("opacity", 1);
+		if (value == 4){
+			$(this).css('background-color', '#'+(Math.random()*0xFFFFFF<<0).toString(16));
+		}
+		else{
+		$(this).css('background-color', colorValue);
+		}
+	});
+
+	}
+	function GridOpacityChange(){
+	
+		$('.grid_square').css("background-color", "white");
+		$('.grid_square').css("opacity", 1);
+	
+			$('.grid_square').hover( function(){
+	
+			var gridOpacity = $(this).css("opacity");
+			if (gridOpacity > 0.1) {
+				$(this).css("opacity",  gridOpacity - 0.1);
+			}else {
+				$(this).css("opacity", 0);
+			}
+
+		});
 	}

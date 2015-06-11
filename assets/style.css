@@ -9,11 +9,14 @@
 }
 
 .grid_square {
-	background-color: black;
-	float: left;
-	border: 1px solid white;
-}
+	background-color: white;
 
+}
+.grid_border{
+	margin: 5px;
+	border: 1px solid black;
+	float:left;
+}
 .grid_square_lit {
 	background-color: red;
 }
