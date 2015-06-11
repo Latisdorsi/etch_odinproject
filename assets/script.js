@@ -1,10 +1,11 @@
 var value = 1, colorValue = '#000000';
-
 $(document).ready(function(){
 $('#grid_container').html("");
 
 $('#load_grid').on('click', function(){
-
+	
+	$('.grid_square').remove();
+	$('.grid_border').remove()
 	repeat_access();
 
 	});
@@ -20,35 +21,30 @@ $('#clear_field').on('click', function(){
 $('#black_trail').on('click', function(){
 
 	value = 1;
+
 	Trail_Value(value);
 	});
 $('#select_trail').on('click', function(){
 
 	value = 2;
+
 	Trail_Value(value);
 
 	});
 $('#opacity_change').on('click', function(){
 
 	value = 3;
+
 	Trail_Value(value);
 	});
 	
 $('#random_trail').on('click', function(){
 
 	value = 4;
+
 	Trail_Value(value);
 	});
-	
-$('.grid_square').hover( function(){
-		if(value== 3){
-			GridOpacityChange();
-		}
-		else{
-		$(this).css('background-color', colorValue);
-		}
-		});
-		
+
 });
 	
 	//Gathers value for grid
@@ -111,19 +107,32 @@ $('.grid_square').hover( function(){
 
 		else
 			alert("Try again!");
+
 		}
 		while(hexValue == false);
+
 	}
 
 	function Hover_Grid(){
 		$('.grid_square').unbind();
 		$('.grid_square').hover( function(){
-		$(this).css("opacity", 1);
+
 		if (value == 4){
+			
+			$('.grid_square').css("opacity", 1);	
 			$(this).css('background-color', '#'+(Math.random()*0xFFFFFF<<0).toString(16));
 		}
+		else if (( value == 1 || value == 2)){
+			//$(this).css("opacity", 1);
+
+			$('.grid_square').css("background-color", "white");
+			$('.grid_square').css("opacity", 1);	
+			$(this).css('background-color', colorValue);
+		}
 		else{
+
 		$(this).css('background-color', colorValue);
+
 		}
 	});
 
@@ -131,16 +140,18 @@ $('.grid_square').hover( function(){
 	function GridOpacityChange(){
 	
 		$('.grid_square').css("background-color", "white");
-		$('.grid_square').css("opacity", 1);
-	
+		$('.grid_square').css("opacity", 1);	
 			$('.grid_square').hover( function(){
-	
 			var gridOpacity = $(this).css("opacity");
-			if (gridOpacity > 0.1) {
-				$(this).css("opacity",  gridOpacity - 0.1);
-			}else {
-				$(this).css("opacity", 0);
-			}
 
+			if (gridOpacity > 0.1) {
+				$(this).css("opacity", gridOpacity - 0.1);
+				
+			}
+			else {
+				$(this).css("opacity", 0);
+
+			}
 		});
+	
 	}
