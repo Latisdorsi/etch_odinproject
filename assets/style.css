@@ -15,7 +15,9 @@ h1{
 	margin: 30px auto;
 	text-align:center;
 }
-
+.bg_reset{
+	backgroudn-color: white;
+}
 .grid_square {
 	background-color: white;
 

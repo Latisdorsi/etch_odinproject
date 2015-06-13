@@ -11,39 +11,44 @@ $('#load_grid').on('click', function(){
 	});
 
 
-$('#clear_field').on('click', function(){
+	$('#clear_field').on('click', function(){
 
-	$('.grid_square').remove();
-	$('.grid_border').remove();
-	
-	});
+		$('.grid_square').remove();
+		$('.grid_border').remove();
+		
+		});
 
-$('#black_trail').on('click', function(){
+		$('#black_trail').on('click', function(){
 
-	value = 1;
+			value = 1;
 
-	Trail_Value(value);
-	});
-$('#select_trail').on('click', function(){
+			Trail_Value(value);
+			});
+		$('#select_trail').on('click', function(){
 
-	value = 2;
+			value = 2;
+			colorValue = Select_Hex();
+			Trail_Value(value);
 
-	Trail_Value(value);
+			});
 
-	});
-$('#opacity_change').on('click', function(){
+		$('#opacity_change').on('click', function(){
 
-	value = 3;
+			value = 3;
+			Trail_Value(value);
+			});
+			
+		$('#random_trail').on('click', function(){
 
-	Trail_Value(value);
-	});
-	
-$('#random_trail').on('click', function(){
+			value = 4;
 
-	value = 4;
+			Trail_Value(value);
+			});
+		$('#fade_out').on('click', function(){
 
-	Trail_Value(value);
-	});
+			value = 5;
+			Trail_Value(value);
+			});
 
 });
 	
@@ -74,84 +79,73 @@ $('#random_trail').on('click', function(){
 		{
 			alert("Invalid input");
 		}
-		Hover_Grid();
+		Trail_Value(value);
 	
 	}
 	//Determines Trail Type
 	function Trail_Value(value){
-		switch(value){
-		case 1:
-		colorValue = '#000000';
-		Hover_Grid();
-		break;
-		case 2:
-		colorValue = Select_Hex();
-		break;
-		case 3:
-		GridOpacityChange();
-		break;
-		default:
-		break;
-		}
 
+		$('.grid_square').css("background-color", "white");
+		$('.grid_square').unbind();
+		$('.grid_square').css("opacity", 1);	
+		$('.grid_square').mouseenter( function(){
+			switch(value){
+				//Default Trail
+			case 1:
+			colorValue = '#000000';
+			$('.grid_square').css("opacity", 1);	
+			$(this).css('background-color', colorValue);
+			break;
+				//Select Trail
+			case 2:
+			$(this).css('background-color', colorValue);
+			break;
+				//Opacity Change
+			case 3:
+			$(this).css('background-color', colorValue);
+			var gridOpacity = $(this).css("opacity");
+			if (gridOpacity > 0.1) {
+				$(this).css("opacity", gridOpacity - 0.1);
+			}
+			else {
+				$(this).css("opacity", 0);
+
+			}
+
+			break;
+				//Random Hex Value Trail
+			case 4:
+			$(this).css("opacity", 1);
+			$(this).css('background-color', '#'+(Math.random()*0xFFFFFF<<0).toString(16));
+			break;
+				//Fade-Out Trail
+			case 5:
+			$(this).css("background-color", "black");
+			$(this).fadeOut( 100);
+			$(this).mouseleave(function(){
+						$(this).fadeIn( 500 , function(){
+							$(this).css("background-color", "white");
+
+						});
+					});
+			break;
+			default:
+			break;
+			}
+		});
 	}
 
 	//Select Own Hex Code
 	function Select_Hex(){
 		var hexValue, hexValidator;
-		do{
-		hexValue = prompt("Please Enter A Hex Value");
+		
+		hexValue = prompt("Please Enter A Hex Value",  '#000000');
 		hexValidator = /^#[0-9A-F]{6}$/i.test(hexValue);
 		if (hexValidator == true)
 			return hexValue;
 
 		else
 			alert("Try again!");
-
-		}
-		while(hexValue == false);
-
-	}
-
-	function Hover_Grid(){
-		$('.grid_square').unbind();
-		$('.grid_square').hover( function(){
-
-		if (value == 4){
 			
-			$('.grid_square').css("opacity", 1);	
-			$(this).css('background-color', '#'+(Math.random()*0xFFFFFF<<0).toString(16));
-		}
-		else if (( value == 1 || value == 2)){
-			//$(this).css("opacity", 1);
 
-			$('.grid_square').css("background-color", "white");
-			$('.grid_square').css("opacity", 1);	
-			$(this).css('background-color', colorValue);
-		}
-		else{
-
-		$(this).css('background-color', colorValue);
-
-		}
-	});
-
-	}
-	function GridOpacityChange(){
-	
-		$('.grid_square').css("background-color", "white");
-		$('.grid_square').css("opacity", 1);	
-			$('.grid_square').hover( function(){
-			var gridOpacity = $(this).css("opacity");
-
-			if (gridOpacity > 0.1) {
-				$(this).css("opacity", gridOpacity - 0.1);
-				
-			}
-			else {
-				$(this).css("opacity", 0);
-
-			}
-		});
-	
 	}
